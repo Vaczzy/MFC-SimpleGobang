@@ -1,4 +1,4 @@
-zzySimpleGobang
+SimpleGobang程序简述
 =======
 本人目前是一名普通的在校大学生
 
