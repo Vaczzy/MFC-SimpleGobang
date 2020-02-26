@@ -1,6 +1,6 @@
 SimpleGobang程序简述
 =======
-[写在前面：我在csdn上的原创文章被脚本之家复制盗用用以投放广告盈利，请大家尊重原创，这里写上我的原创文章地址：https://blog.csdn.net/weixin_44899883/article/details/104379195]
+[写在前面：我在csdn上介绍此程序的原创文章被脚本之家复制盗用用以投放广告盈利，请大家尊重原创，这里写上我的原创文章地址：https://blog.csdn.net/weixin_44899883/article/details/104379195]
 
 本人目前是一名普通的在校大学生
 
