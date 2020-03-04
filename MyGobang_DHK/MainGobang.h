@@ -1,17 +1,17 @@
 #pragma once
-struct Pieces//Æå×ÓÅĞ¶Ïµ¥Ôª
+struct Pieces//æ£‹å­åˆ¤æ–­å•å…ƒ
 {
-	bool bIsPieces;//ÊÇ·ñÒÑÓĞÆå
-	bool bIsBlack;//ºÚÆå»ò°×Æå
-	int x,y;//Æå×ÓËùÔÚ¸ñ
+	bool bIsPieces;//æ˜¯å¦å·²æœ‰æ£‹
+	bool bIsBlack;//é»‘æ£‹æˆ–ç™½æ£‹
+	int x,y;//æ£‹å­æ‰€åœ¨æ ¼
 };
 
 struct MyRectangle
 {
-	int x,y;//Ñ¡ÖĞ¿òºËĞÄ×ø±ê
+	int x,y;//é€‰ä¸­æ¡†æ ¸å¿ƒåæ ‡
 };
 
-//Îå×ÓÆåËã·¨Ö÷Àà
+//äº”å­æ£‹ç®—æ³•ä¸»ç±»
 class CMainGobang
 {
 public:
@@ -19,36 +19,36 @@ public:
 	~CMainGobang(void);
 private:
 	/////basic information
-	int iSize;//ÆåÅÌ´óĞ¡²ÎÊı
-	int xmax,xmin,ymax,ymin;//ÆåÅÌ´óĞ¡²ÎÊı
-	int idx;//ÆåÅÌÃ¿Ğ¡¸ñ³¤¶È
+	int iSize;//æ£‹ç›˜å¤§å°å‚æ•°
+	int xmax,xmin,ymax,ymin;//æ£‹ç›˜å¤§å°å‚æ•°
+	int idx;//æ£‹ç›˜æ¯å°æ ¼é•¿åº¦
 	/////pieces information
-	int iPieces;//Æå×Ó¼ÆÊı//µ±Ç°Æå×Ó¼ÆÊıÎªiPieces-1
-	int iPiecesNum;//Æå×Ó×ÜÊı
-	Pieces *pPieces;//Æå×Ó
+	int iPieces;//æ£‹å­è®¡æ•°//å½“å‰æ£‹å­è®¡æ•°ä¸ºiPieces-1
+	int iPiecesNum;//æ£‹å­æ€»æ•°
+	Pieces *pPieces;//æ£‹å­
 	/////rectangle information
-	int iRectangleNum;//Ñ¡ÖĞ¿ò¸öÊı
-	MyRectangle *pmyRectangle;//Ñ¡ÖĞ¿ò
+	int iRectangleNum;//é€‰ä¸­æ¡†ä¸ªæ•°
+	MyRectangle *pmyRectangle;//é€‰ä¸­æ¡†
 	/////for draw rectangle&draw pieces
-	bool NoRectangle(int x,int y);//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÊÇ·ñÓĞÑ¡ÖĞ¿ò
-	bool NoPieces(int x,int y);//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÊÇ·ñÓĞÆå×Ó
+	bool NoRectangle(int x,int y);//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ˜¯å¦æœ‰é€‰ä¸­æ¡†
+	bool NoPieces(int x,int y);//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ˜¯å¦æœ‰æ£‹å­
 	/////for judge win
-	bool IsBlack(int x,int y);//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÆå×ÓÑÕÉ«
-	bool IsConnect(int iDir,int x,int y);//²éÕÒÏàÁ¬µÄÆå×Ó
-	int ConnectNum();//·µ»ØÏàÁ¬Æå×Ó¸öÊı
+	bool IsBlack(int x,int y);//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ£‹å­é¢œè‰²
+	bool IsConnect(int iDir,int x,int y);//æŸ¥æ‰¾ç›¸è¿çš„æ£‹å­
+	int ConnectNum();//è¿”å›ç›¸è¿æ£‹å­ä¸ªæ•°
 	/////for machine fight
-	//void MaConnectNum(int iConnectNum,int iDir);//·µ»ØÈõÏàÁ¬Æå×Ó¸öÊı/iDir·½Ïò²ÎÊı
-	int ConnectDir();//·µ»ØÏàÁ¬Æå×Ó·½Ïò
+	//void MaConnectNum(int iConnectNum,int iDir);//è¿”å›å¼±ç›¸è¿æ£‹å­ä¸ªæ•°/iDiræ–¹å‘å‚æ•°
+	//int ConnectDir();//è¿”å›ç›¸è¿æ£‹å­æ–¹å‘
 public:
-	void DrawMainTable(CDC *pDC,CRect rect,int iTableSize);//»æÖÆÆåÅÌº¯Êı
-	void SetPieces();//Éè²Îº¯Êı//½«³õÊ¼»¯´úÂëÓë»æÖÆÆåÅÌ´úÂë·Ö¿ª
-	void DrawRectangle(CDC *pDC,CPoint pt);//»æÖÆÑ¡ÖĞ¿ò/·µ»ØÊÇ·ñ»æÖÆ
-	void DrawPieces(CDC *pDC,CRect rect,CPoint pt);//»æÖÆÆå×Óº¯Êı
-	bool ClearPieces(CDC *pDC,bool &bBlack);//Çå³ıÆå×Óº¯Êı/ÓÃÓÚ»ÚÆå
-	void KeepPieces(CDC *pDC,CRect rect,int iTableSize);//Ñ­»·»æÖÆÆå×Ó //ÓÃÒÔ½â¾öË¢ĞÂÎÊÌâ
-	void MachineDraw(CDC *pDC);//»úÆ÷ÏÂÆåº¯Êı
+	void DrawMainTable(CDC *pDC,CRect rect,int iTableSize);//ç»˜åˆ¶æ£‹ç›˜å‡½æ•°
+	void SetPieces();//è®¾å‚å‡½æ•°//å°†åˆå§‹åŒ–ä»£ç ä¸ç»˜åˆ¶æ£‹ç›˜ä»£ç åˆ†å¼€
+	void DrawRectangle(CDC *pDC,CPoint pt);//ç»˜åˆ¶é€‰ä¸­æ¡†/è¿”å›æ˜¯å¦ç»˜åˆ¶
+	void DrawPieces(CDC *pDC,CRect rect,CPoint pt);//ç»˜åˆ¶æ£‹å­å‡½æ•°
+	bool ClearPieces(CDC *pDC,bool &bBlack);//æ¸…é™¤æ£‹å­å‡½æ•°/ç”¨äºæ‚”æ£‹
+	void KeepPieces(CDC *pDC,CRect rect,int iTableSize);//å¾ªç¯ç»˜åˆ¶æ£‹å­ //ç”¨ä»¥è§£å†³åˆ·æ–°é—®é¢˜
+	//void MachineDraw(CDC *pDC);//æœºå™¨ä¸‹æ£‹å‡½æ•°
 
-	bool Success();//ÅĞ¶ÏÊ¤Àûº¯Êı
-	void ReplayMark(CDC *pDC);//¸´ÅÌ±ê¼Çº¯Êı
+	bool Success();//åˆ¤æ–­èƒœåˆ©å‡½æ•°
+	void ReplayMark(CDC *pDC);//å¤ç›˜æ ‡è®°å‡½æ•°
 };
 
