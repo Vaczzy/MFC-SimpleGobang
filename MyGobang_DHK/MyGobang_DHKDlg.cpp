@@ -162,8 +162,8 @@ void CMyGobang_DHKDlg::OnPaint()
 	if(bIsReady&&!bDrawPieces)
 	{
 		//绘制棋盘
-	        CDC *pDC;
-	        pDC=picMain.GetDC();//获取该控件的画布
+		CDC *pDC;
+		pDC = picMain.GetDC();//获取该控件的画布//2020.02.23
 		CRect rect;
 		picMain.GetClientRect(&rect);//获取控件大小
 		if (((CButton *)GetDlgItem(IDC_RADIO_Normol))->GetCheck())
@@ -178,7 +178,6 @@ void CMyGobang_DHKDlg::OnPaint()
 		{
 			gobang.DrawMainTable(pDC,&rect,19);//19*19棋盘
 		}
-		ReleaseDC(pDC);
 	}
 }
 
@@ -218,7 +217,6 @@ void CMyGobang_DHKDlg::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		gobang.DrawRectangle(pDC,pt);
 	}
-	
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
@@ -237,18 +235,21 @@ void CMyGobang_DHKDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	    GetDlgItem(IDC_MainTable)->GetWindowRect(&rect);//获取控件屏幕坐标
 		CPoint pt;
 		GetCursorPos(&pt);//获取鼠标点击坐标(屏幕坐标坐标)
+		pt.x -= rect.left;//转化为控件中坐标
+		pt.y -= rect.top;
 		CDC *pDC=picMain.GetDC();//获取该控件的画布
 		gobang.DrawPieces(pDC,rect,pt);//绘制棋子
 		//SetTimer(1,40,NULL);
-		if(bIsMachine)
-		{
-			gobang.MachineDraw(pDC);//机器下棋
-		}
+		//if(bIsMachine)
+		//{
+		//	gobang.MachineDraw(pDC);//机器下棋
+		//}
 		if(gobang.Success())//执行胜利判断函数
 		{
 			KillTimer(1);
 			gobang.ReplayMark(pDC);
 			bIsReady=false;
+			gobang.~CMainGobang();
 		}
 	}
 	CDialogEx::OnLButtonDown(nFlags, point);
