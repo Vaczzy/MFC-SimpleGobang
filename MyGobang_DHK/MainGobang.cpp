@@ -4,6 +4,7 @@
 
 CMainGobang::CMainGobang(void)
 {
+	//AfxMessageBox(_T("ä¸»ç±»æ‰§è¡Œäº†æ„é€ å‡½æ•°"));
 }
 
 
@@ -19,45 +20,46 @@ CMainGobang::~CMainGobang(void)
 		delete []pmyRectangle;
 		pmyRectangle=NULL;
 	}
+	//AfxMessageBox(_T("ä¸»ç±»æ‰§è¡Œäº†ææ„å‡½æ•°"));
 }
 
-//»æÖÆÆåÅÌº¯Êı
-//ºóÆÚ¿ÉÌí¼ÓÆåÅÌ´óĞ¡²ÎÊı
-//¿Ø¼ş×ø±ê
+//ç»˜åˆ¶æ£‹ç›˜å‡½æ•°
+//åæœŸå¯æ·»åŠ æ£‹ç›˜å¤§å°å‚æ•°
+//æ§ä»¶åæ ‡
 void CMainGobang::DrawMainTable(CDC *pDC,CRect rect,int iTableSize)
 {
 	iSize=iTableSize;
-	//ÏÈ¸²¸Ç±³¾°
+	//å…ˆè¦†ç›–èƒŒæ™¯
 	CRect Back;
 	Back.top=rect.top+1;
 	Back.bottom=rect.bottom-1;
 	Back.left=rect.left+1;
 	Back.right=rect.right-1;
-	pDC->FillSolidRect(&Back,RGB(240,240,240));//Ìî³ä
-	//¼ÆËãÃ¿¸ñ³¤¶È
+	pDC->FillSolidRect(&Back,RGB(240,240,240));//å¡«å……
+	//è®¡ç®—æ¯æ ¼é•¿åº¦
 	idx=(((rect.right-rect.left)/(iTableSize+1))>((rect.bottom-rect.top)/(iTableSize+1)))?
 		(rect.bottom-rect.top)/(iTableSize+1):
 	    (rect.right-rect.left)/(iTableSize+1);
 	CBrush brush(RGB(0,0,0));
 	CBrush *OldBrush=pDC->SelectObject(&brush);
-	int ixp,iyp;//ÆåÅÌĞÇ×ø±ê
-	//»æÖÆÌìÔª
+	int ixp,iyp;//æ£‹ç›˜æ˜Ÿåæ ‡
+	//ç»˜åˆ¶å¤©å…ƒ
 	ixp=(rect.right-rect.left)/2;
 	iyp=(rect.bottom-rect.top)/2;
 	pDC->Ellipse(ixp-3,iyp-3,ixp+3,iyp+3);
-	//»æÖÆĞÇ
+	//ç»˜åˆ¶æ˜Ÿ
 	ixp-=4*idx;
-	iyp-=4*idx;//×óÉÏ½Ç
+	iyp-=4*idx;//å·¦ä¸Šè§’
 	pDC->Ellipse(ixp-3,iyp-3,ixp+3,iyp+3);
-	iyp+=8*idx;//×óÏÂ½Ç
+	iyp+=8*idx;//å·¦ä¸‹è§’
 	pDC->Ellipse(ixp-3,iyp-3,ixp+3,iyp+3);
-	ixp+=8*idx;//ÓÒÏÂ½Ç
+	ixp+=8*idx;//å³ä¸‹è§’
 	pDC->Ellipse(ixp-3,iyp-3,ixp+3,iyp+3);
-	iyp-=8*idx;//ÓÒÉÏ½Ç
+	iyp-=8*idx;//å³ä¸Šè§’
 	pDC->Ellipse(ixp-3,iyp-3,ixp+3,iyp+3);
-	pDC->SelectObject(OldBrush);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-	brush.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
-	//¼ÆËãÆåÅÌ´óĞ¡²¢·ÅÖÃÓÚ´°¿ÚÖĞ¼ä
+	pDC->SelectObject(OldBrush);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+	brush.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
+	//è®¡ç®—æ£‹ç›˜å¤§å°å¹¶æ”¾ç½®äºçª—å£ä¸­é—´
 	ymin=(rect.bottom-rect.top)/2-(iTableSize-1)/2*idx;
 	ymax=ymin+(iTableSize-1)*idx;
 	xmin=(rect.right-rect.left)/2-(iTableSize-1)/2*idx;
@@ -74,159 +76,162 @@ void CMainGobang::DrawMainTable(CDC *pDC,CRect rect,int iTableSize)
 	}
 }
 
-//Éè²Îº¯Êı
+//è®¾å‚å‡½æ•°
 void CMainGobang::SetPieces()
 {
-	iPiecesNum=iSize*iSize;//Æå×ÓÅĞ¶Ïµ¥ÔªÊı
-	iPieces=0;//Æå×Ó¼ÆÊı
-	pPieces=new Pieces[iPiecesNum];//Éú³É´æ´¢Æå×ÓÅĞ¶Ï
+	iPiecesNum=iSize*iSize;//æ£‹å­åˆ¤æ–­å•å…ƒæ•°
+	iPieces=0;//æ£‹å­è®¡æ•°
+	pPieces=new Pieces[iPiecesNum];//ç”Ÿæˆå­˜å‚¨æ£‹å­åˆ¤æ–­
 	for(int i=0;i<iPiecesNum;i++)
 	{
-		pPieces[i].bIsPieces=false;//Ä¬ÈÏ¸ÃÎ»ÖÃÃ»ÓĞÆå×Ó
+		pPieces[i].bIsPieces=false;//é»˜è®¤è¯¥ä½ç½®æ²¡æœ‰æ£‹å­
 		if(i%2!=0)
 		{
-			pPieces[i].bIsBlack=false;//Ë«ÊıÎª°×Æå×Ó
+			pPieces[i].bIsBlack=false;//åŒæ•°ä¸ºç™½æ£‹å­
 		}
 		else
 		{
-			pPieces[i].bIsBlack=true;//µ¥ÊıÎªºÚÆå×Ó
+			pPieces[i].bIsBlack=true;//å•æ•°ä¸ºé»‘æ£‹å­
 		}
 	}
 	iRectangleNum=0;
-	pmyRectangle=new MyRectangle[2];//Éú³ÉÑ¡ÖĞ¿ò´æ´¢µ¥Ôª
+	pmyRectangle=new MyRectangle[2];//ç”Ÿæˆé€‰ä¸­æ¡†å­˜å‚¨å•å…ƒ
 }
 
-//»æÖÆÑ¡ÖĞ¿ò
+//ç»˜åˆ¶é€‰ä¸­æ¡†
 void CMainGobang::DrawRectangle(CDC *pDC,CPoint pt)
 {
-	CPen pen;
-	pen.CreatePen(PS_SOLID,1,RGB(255,0,0));//´´½¨»­±Ê
-	CPen *OldPen=pDC->SelectObject(&pen);
-	for(int x=xmin;x<=xmax;x+=idx)
-	{
-		for(int y=ymin;y<=ymax;y+=idx)
-		{
-			if((pt.x<=x+0.5*idx)&&(pt.x>x-0.5*idx)&&
-				(pt.y<=y+0.5*idx)&&(pt.y>y-0.5*idx)&&
-				(NoPieces(x,y))&&(NoRectangle(x,y)))
-			{
-				//»­Ñ¡ÖĞ¿ò
-				pDC->MoveTo(x-10,y-5);
-				pDC->LineTo(x-10,y-10);
-				pDC->LineTo(x-5,y-10);
-
-				pDC->MoveTo(x+10,y-5);
-				pDC->LineTo(x+10,y-10);
-				pDC->LineTo(x+5,y-10);
-
-				pDC->MoveTo(x-10,y+5);
-				pDC->LineTo(x-10,y+10);
-				pDC->LineTo(x-5,y+10);
-
-				pDC->MoveTo(x+10,y+5);
-				pDC->LineTo(x+10,y+10);
-				pDC->LineTo(x+5,y+10);
-				//¸³Öµ
-				pmyRectangle[iRectangleNum].x=x;
-				pmyRectangle[iRectangleNum].y=y;
-				iRectangleNum++;
-			}
-		}
-	}
-	if(iRectangleNum==2)
+	//ä¿®å¤é¼ æ ‡ä½ç½®åœ¨çª—å£å¤–çš„æƒ…å†µ2020.03.04
+	if (pt.x >= 0 && pt.y >= 0)
 	{
 		CPen pen;
-		pen.CreatePen(PS_SOLID,1,RGB(240,240,240));//´´½¨»­±Ê
-		CPen *OldPen=pDC->SelectObject(&pen);
-		int x,y;
-		x=pmyRectangle[0].x;
-		y=pmyRectangle[0].y;
-		//Çå³ıÑ¡ÖĞ¿ò
-		pDC->MoveTo(x-10,y-5);
-		pDC->LineTo(x-10,y-10);
-		pDC->LineTo(x-5,y-10);
+		pen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));//åˆ›å»ºç”»ç¬”
+		CPen *OldPen = pDC->SelectObject(&pen);
+		//è·å–ç¦»é¼ æ ‡ä½ç½®æœ€è¿‘çš„æ£‹æ ¼
+		int x, y;//æ£‹æ ¼åæ ‡
+		x = xmin+int(double(pt.x - xmin) / idx + 0.5)*idx;
+		y = ymin+int(double(pt.y - ymin) / idx + 0.5)*idx;
+		x = x > xmax ? xmax : x;
+		y = y > ymax ? ymax : y;
+		//è‹¥æ­¤å¤„æ— æ£‹å­ æ— é€‰ä¸­æ¡†
+		if ((NoPieces(x, y)) && (NoRectangle(x, y)))
+		{
+			//ç”»é€‰ä¸­æ¡†
+			pDC->MoveTo(x - 10, y - 5);
+			pDC->LineTo(x - 10, y - 10);
+			pDC->LineTo(x - 5, y - 10);
 
-		pDC->MoveTo(x+10,y-5);
-		pDC->LineTo(x+10,y-10);
-		pDC->LineTo(x+5,y-10);
+			pDC->MoveTo(x + 10, y - 5);
+			pDC->LineTo(x + 10, y - 10);
+			pDC->LineTo(x + 5, y - 10);
 
-		pDC->MoveTo(x-10,y+5);
-		pDC->LineTo(x-10,y+10);
-		pDC->LineTo(x-5,y+10);
+			pDC->MoveTo(x - 10, y + 5);
+			pDC->LineTo(x - 10, y + 10);
+			pDC->LineTo(x - 5, y + 10);
 
-		pDC->MoveTo(x+10,y+5);
-		pDC->LineTo(x+10,y+10);
-		pDC->LineTo(x+5,y+10);
-		//ÖØÖÃ¸³Öµ
-		pmyRectangle[0].x=pmyRectangle[1].x;
-		pmyRectangle[0].y=pmyRectangle[1].y;
-		iRectangleNum=1;//ÖØÖÃ¼ÆÊı
+			pDC->MoveTo(x + 10, y + 5);
+			pDC->LineTo(x + 10, y + 10);
+			pDC->LineTo(x + 5, y + 10);
+			//èµ‹å€¼
+			pmyRectangle[iRectangleNum].x = x;
+			pmyRectangle[iRectangleNum].y = y;
+			iRectangleNum++;
+		}
+		if (iRectangleNum == 2)
+		{
+			CPen pen;
+			pen.CreatePen(PS_SOLID, 1, RGB(240, 240, 240));//åˆ›å»ºç”»ç¬”
+			CPen *OldPen = pDC->SelectObject(&pen);
+			int x, y;
+			x = pmyRectangle[0].x;
+			y = pmyRectangle[0].y;
+			//æ¸…é™¤é€‰ä¸­æ¡†
+			pDC->MoveTo(x - 10, y - 5);
+			pDC->LineTo(x - 10, y - 10);
+			pDC->LineTo(x - 5, y - 10);
+
+			pDC->MoveTo(x + 10, y - 5);
+			pDC->LineTo(x + 10, y - 10);
+			pDC->LineTo(x + 5, y - 10);
+
+			pDC->MoveTo(x - 10, y + 5);
+			pDC->LineTo(x - 10, y + 10);
+			pDC->LineTo(x - 5, y + 10);
+
+			pDC->MoveTo(x + 10, y + 5);
+			pDC->LineTo(x + 10, y + 10);
+			pDC->LineTo(x + 5, y + 10);
+			//é‡ç½®èµ‹å€¼
+			pmyRectangle[0].x = pmyRectangle[1].x;
+			pmyRectangle[0].y = pmyRectangle[1].y;
+			iRectangleNum = 1;//é‡ç½®è®¡æ•°
+		}
+		pDC->SelectObject(OldPen);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+		pen.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
 	}
-	pDC->SelectObject(OldPen);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-	pen.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
 }
 
-//»æÖÆÆå×Óº¯Êı
+//ç»˜åˆ¶æ£‹å­å‡½æ•°
 void CMainGobang::DrawPieces(CDC *pDC,CRect rect,CPoint pt)
 {
-	pt.x-=rect.left;//×ª»¯Îª¿Ø¼şÖĞ×ø±ê
-	pt.y-=rect.top;
 	int iTmp;
-	if(pPieces[iPieces].bIsBlack==true)//ºÚÆå×Ó
+	if(pPieces[iPieces].bIsBlack==true)//é»‘æ£‹å­
 	{
 		iTmp=0;
 	}
-	if(pPieces[iPieces].bIsBlack==false)//°×Æå×Ó
+	if(pPieces[iPieces].bIsBlack==false)//ç™½æ£‹å­
 	{
 		iTmp=255;
 	}
-	for(int x=xmin;x<=xmax;x+=idx)
+	//ä¿®å¤é¼ æ ‡ä½ç½®åœ¨çª—å£å¤–çš„æƒ…å†µ2020.03.04
+	if (pt.x >= 0 && pt.y >= 0)
 	{
-		for(int y=ymin;y<=ymax;y+=idx)
+		//è·å–ç¦»é¼ æ ‡ä½ç½®æœ€è¿‘çš„æ£‹æ ¼
+		int x, y;//æ£‹æ ¼åæ ‡
+		x = xmin + int(double(pt.x - xmin) / idx + 0.5)*idx;
+		y = ymin + int(double(pt.y - ymin) / idx + 0.5)*idx;
+		x = x > xmax ? xmax : x;
+		y = y > ymax ? ymax : y;
+		if (NoPieces(x, y))
 		{
-			if((pt.x<=x+0.5*idx)&&(pt.x>x-0.5*idx)&&
-				(pt.y<=y+0.5*idx)&&(pt.y>y-0.5*idx)&&
-				(NoPieces(x,y)))
-			{	
-				//»­Æå×Ó
-				CBrush brush(RGB(iTmp,iTmp,iTmp));
-	            CBrush *OldBrush=pDC->SelectObject(&brush);
-				pDC->Ellipse(x-10,y-10,x+10,y+10);
-				pDC->SelectObject(OldBrush);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-	            brush.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
-				//Çå³ı±ê¼Ç
-				CPen penClearMark;//ÓÃÓÚÇå³ı±ê¼ÇµÄ»­±Ê
-				penClearMark.CreatePen(PS_SOLID,1,RGB(abs(iTmp-255),abs(iTmp-255),abs(iTmp-255)));
-				CPen *OldPenClearMark=pDC->SelectObject(&penClearMark);
-				pDC->MoveTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y-3);
-				pDC->LineTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y+4);
-				pDC->MoveTo(pPieces[iPieces-1].x-3,pPieces[iPieces-1].y);
-				pDC->LineTo(pPieces[iPieces-1].x+4,pPieces[iPieces-1].y);
-				pDC->SelectObject(OldPenClearMark);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-	            penClearMark.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
-				//»­±ê¼Ç
-				CPen penMark;//ÓÃÓÚ»æÖÆ±ê¼ÇµÄ»­±Ê
-				penMark.CreatePen(PS_SOLID,1,RGB(255,0,0));
-				CPen *OldPenMark=pDC->SelectObject(&penMark);
-				pDC->MoveTo(x,y-3);
-				pDC->LineTo(x,y+4);//ÃÖ²¹ÔöÁ¿Ì«Ğ¡µ¼ÖÂµÄ²»¶Ô³Æ
-				pDC->MoveTo(x-3,y);
-				pDC->LineTo(x+4,y);
-				pDC->SelectObject(OldPenMark);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-				penMark.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
-				//¸³Öµ
-				pPieces[iPieces].bIsPieces=true;
-				pPieces[iPieces].x=x;
-				pPieces[iPieces].y=y;
-				//¼ÆÊı¼Ó1
-				iPieces++;
-			}
+			//ç”»æ£‹å­
+			CBrush brush(RGB(iTmp, iTmp, iTmp));
+			CBrush *OldBrush = pDC->SelectObject(&brush);
+			pDC->Ellipse(x - 10, y - 10, x + 10, y + 10);
+			pDC->SelectObject(OldBrush);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+			brush.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
+			//æ¸…é™¤æ ‡è®°
+			CPen penClearMark;//ç”¨äºæ¸…é™¤æ ‡è®°çš„ç”»ç¬”
+			penClearMark.CreatePen(PS_SOLID, 1, RGB(abs(iTmp - 255), abs(iTmp - 255), abs(iTmp - 255)));
+			CPen *OldPenClearMark = pDC->SelectObject(&penClearMark);
+			pDC->MoveTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y - 3);
+			pDC->LineTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y + 4);
+			pDC->MoveTo(pPieces[iPieces - 1].x - 3, pPieces[iPieces - 1].y);
+			pDC->LineTo(pPieces[iPieces - 1].x + 4, pPieces[iPieces - 1].y);
+			pDC->SelectObject(OldPenClearMark);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+			penClearMark.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
+			//ç”»æ ‡è®°
+			CPen penMark;//ç”¨äºç»˜åˆ¶æ ‡è®°çš„ç”»ç¬”
+			penMark.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+			CPen *OldPenMark = pDC->SelectObject(&penMark);
+			pDC->MoveTo(x, y - 3);
+			pDC->LineTo(x, y + 4);//å¼¥è¡¥å¢é‡å¤ªå°å¯¼è‡´çš„ä¸å¯¹ç§°
+			pDC->MoveTo(x - 3, y);
+			pDC->LineTo(x + 4, y);
+			pDC->SelectObject(OldPenMark);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+			penMark.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
+			//èµ‹å€¼
+			pPieces[iPieces].bIsPieces = true;
+			pPieces[iPieces].x = x;
+			pPieces[iPieces].y = y;
+			//è®¡æ•°åŠ 1
+			iPieces++;
 		}
 	}
 }
 
-//Çå³ıÆå×Óº¯Êı/ÓÃÓÚ»ÚÆå
-////////////////////////////////////////////////////problem:»ÚÆå´ÎÊıË«·½¼ÓÆğÀ´Ò»¹²Ö»ÄÜ»ÚÒ»´Î Ó¦Îª¸÷·½¸÷ÄÜ»ÚÒ»´Î
+//æ¸…é™¤æ£‹å­å‡½æ•°/ç”¨äºæ‚”æ£‹
+////////////////////////////////////////////////////problem:æ‚”æ£‹æ¬¡æ•°åŒæ–¹åŠ èµ·æ¥ä¸€å…±åªèƒ½æ‚”ä¸€æ¬¡ åº”ä¸ºå„æ–¹å„èƒ½æ‚”ä¸€æ¬¡
 bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 {
 	CRect rect;
@@ -236,7 +241,7 @@ bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 		rect.top=pPieces[iPieces-1].y-10;
 		rect.left=pPieces[iPieces-1].x-10;
 		rect.right=pPieces[iPieces-1].x+10;
-		pDC->FillSolidRect(&rect,RGB(240,240,240));//Ìî³ä
+		pDC->FillSolidRect(&rect,RGB(240,240,240));//å¡«å……
 	
 		CPen pen;
 		pen.CreatePen(PS_SOLID,1,RGB(0,0,0));
@@ -245,8 +250,8 @@ bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 		pDC->LineTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y+10);
 		pDC->MoveTo(pPieces[iPieces-1].x-10,pPieces[iPieces-1].y);
 		pDC->LineTo(pPieces[iPieces-1].x+10,pPieces[iPieces-1].y);
-		pDC->SelectObject(OldPen);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-		pen.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
+		pDC->SelectObject(OldPen);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+		pen.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
 
 		pPieces[iPieces-1].x=NULL;
 		pPieces[iPieces-1].y=NULL;
@@ -259,7 +264,7 @@ bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 		{
 			bBlack=true;
 		}
-		iPieces--;//¼ÆÊı¼õ1
+		iPieces--;//è®¡æ•°å‡1
 		return true;
 	}
 	else
@@ -268,7 +273,7 @@ bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 	}
 }
 
-//Ñ­»·»æÖÆÆå×Ó //ÓÃÒÔ½â¾öË¢ĞÂÎÊÌâ
+//å¾ªç¯ç»˜åˆ¶æ£‹å­ //ç”¨ä»¥è§£å†³åˆ·æ–°é—®é¢˜
 void CMainGobang::KeepPieces(CDC *pDC,CRect rect,int iTableSize)
 {
 	ymin=(rect.bottom-rect.top)/2-(iTableSize-1)/2*idx;
@@ -280,35 +285,35 @@ void CMainGobang::KeepPieces(CDC *pDC,CRect rect,int iTableSize)
 	{
 		if(!NoPieces(pPieces[i].x,pPieces[i].y))
 		{
-			if(i%2==0)//ºÚÆå×Ó
+			if(i%2==0)//é»‘æ£‹å­
 			{
 				iTmp=0;
 			}
-			else//°×Æå×Ó
+			else//ç™½æ£‹å­
 			{
 				iTmp=255;
 			}
-			//»­Æå×Ó
+			//ç”»æ£‹å­
 			CBrush brush(RGB(iTmp,iTmp,iTmp));
 			CBrush *OldBrush=pDC->SelectObject(&brush);
 			pDC->Ellipse(pPieces[i].x-10,pPieces[i].y-10,pPieces[i].x+10,pPieces[i].y+10);
-			pDC->SelectObject(OldBrush);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-			brush.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
-			//»­±ê¼Ç
-			CPen penMark;//ÓÃÓÚ»æÖÆ±ê¼ÇµÄ»­±Ê
+			pDC->SelectObject(OldBrush);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+			brush.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
+			//ç”»æ ‡è®°
+			CPen penMark;//ç”¨äºç»˜åˆ¶æ ‡è®°çš„ç”»ç¬”
 			penMark.CreatePen(PS_SOLID,1,RGB(255,0,0));
 			CPen *OldPenMark=pDC->SelectObject(&penMark);
 			pDC->MoveTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y-3);
-			pDC->LineTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y+4);//ÃÖ²¹ÔöÁ¿Ì«Ğ¡µ¼ÖÂµÄ²»¶Ô³Æ
+			pDC->LineTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y+4);//å¼¥è¡¥å¢é‡å¤ªå°å¯¼è‡´çš„ä¸å¯¹ç§°
 			pDC->MoveTo(pPieces[iPieces-1].x-3,pPieces[iPieces-1].y);
 			pDC->LineTo(pPieces[iPieces-1].x+4,pPieces[iPieces-1].y);
-			pDC->SelectObject(OldPenMark);//»Ö¸´Éè±¸»·¾³ÖĞÔ­À´µÄ»­±Ê
-			penMark.DeleteObject();//ÊÍ·Å»æÍ¼×ÊÔ´
+			pDC->SelectObject(OldPenMark);//æ¢å¤è®¾å¤‡ç¯å¢ƒä¸­åŸæ¥çš„ç”»ç¬”
+			penMark.DeleteObject();//é‡Šæ”¾ç»˜å›¾èµ„æº
 		}
 	}
 }
 
-//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÊÇ·ñÓĞÑ¡ÖĞ¿ò
+//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ˜¯å¦æœ‰é€‰ä¸­æ¡†
 bool CMainGobang::NoRectangle(int x,int y)
 {
 	bool bNoRectangle;
@@ -323,68 +328,78 @@ bool CMainGobang::NoRectangle(int x,int y)
 	return bNoRectangle;
 }
 
-//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÊÇ·ñÓĞÆå×Ó
+//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ˜¯å¦æœ‰æ£‹å­
 bool CMainGobang::NoPieces(int x,int y)
 {
 	for(int i=0;i<iPiecesNum;i++)
 	{
-		if((x==pPieces[i].x)&&(y==pPieces[i].y)&&(pPieces[i].bIsPieces==false))
+		if((x==pPieces[i].x)&&(y==pPieces[i].y))//æ²¡æœ‰ä¸‹æ£‹æ—¶ï¼ŒpPiecesçš„x,yçš†ä¸ºç©ºå€¼
 		{
-			return true;
-		}
-		if((x==pPieces[i].x)&&(y==pPieces[i].y)&&(pPieces[i].bIsPieces==true))
-		{
-			return false;
+			if (pPieces[i].bIsPieces)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
+	//2020.03.04ä¿®å¤äº†æ²¡æœ‰è¿”å›å€¼çš„æƒ…å†µ
+	return true;
 }
 
-//ÅĞ¶Ï¸ÃÎ»ÖÃÉÏÆå×ÓÑÕÉ«
+//åˆ¤æ–­è¯¥ä½ç½®ä¸Šæ£‹å­é¢œè‰²
 bool CMainGobang::IsBlack(int x,int y)
 {
 	for(int i=0;i<iPiecesNum;i++)
 	{
-		if((x==pPieces[i].x)&&(y==pPieces[i].y)&&(pPieces[i].bIsBlack==false))
+		if ((x == pPieces[i].x) && (y == pPieces[i].y))
 		{
-			return false;
-		}
-		if((x==pPieces[i].x)&&(y==pPieces[i].y)&&(pPieces[i].bIsBlack==true))
-		{
-			return true;
+			if (!pPieces[i].bIsBlack)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
+	//2020.03.04ä¿®å¤äº†æ²¡æœ‰è¿”å›å€¼çš„æƒ…å†µ
+	return true;
 }
 
-//²éÕÒÏàÁ¬µÄÆå×Ó
+//æŸ¥æ‰¾ç›¸è¿çš„æ£‹å­
 //up1,down2,left3,right4,up-left5,down-right6,up-right7,down-left8
 bool CMainGobang::IsConnect(int iDir,int x,int y)
 {
 	bool bIsConnect=false;
-	if(((iDir==1)&&(IsBlack(x,y)==IsBlack(x,y-idx))&&(!NoPieces(x,y-idx)))//ÏòÉÏ²éÕÒ
-		||((iDir==2)&&(IsBlack(x,y)==IsBlack(x,y+idx))&&(!NoPieces(x,y+idx)))//ÏòÏÂ²éÕÒ
-		||((iDir==3)&&(IsBlack(x,y)==IsBlack(x-idx,y))&&(!NoPieces(x-idx,y)))//Ïò×ó²éÕÒ
-		||((iDir==4)&&(IsBlack(x,y)==IsBlack(x+idx,y))&&(!NoPieces(x+idx,y)))//ÏòÓÒ²éÕÒ
-		||((iDir==5)&&(IsBlack(x,y)==IsBlack(x-idx,y-idx))&&(!NoPieces(x-idx,y-idx)))//Ïò×óÉÏ²éÕÒ
-		||((iDir==6)&&(IsBlack(x,y)==IsBlack(x+idx,y+idx))&&(!NoPieces(x+idx,y+idx)))//ÏòÓÒÏÂ²éÕÒ
-		||((iDir==7)&&(IsBlack(x,y)==IsBlack(x+idx,y-idx))&&(!NoPieces(x+idx,y-idx)))//ÏòÓÒÉÏ²éÕÒ
-		||((iDir==8)&&(IsBlack(x,y)==IsBlack(x-idx,y+idx))&&(!NoPieces(x-idx,y+idx))))//Ïò×óÏÂ²éÕÒ
+	if(((iDir==1)&&(IsBlack(x,y)==IsBlack(x,y-idx))&&(!NoPieces(x,y-idx)))//å‘ä¸ŠæŸ¥æ‰¾
+		||((iDir==2)&&(IsBlack(x,y)==IsBlack(x,y+idx))&&(!NoPieces(x,y+idx)))//å‘ä¸‹æŸ¥æ‰¾
+		||((iDir==3)&&(IsBlack(x,y)==IsBlack(x-idx,y))&&(!NoPieces(x-idx,y)))//å‘å·¦æŸ¥æ‰¾
+		||((iDir==4)&&(IsBlack(x,y)==IsBlack(x+idx,y))&&(!NoPieces(x+idx,y)))//å‘å³æŸ¥æ‰¾
+		||((iDir==5)&&(IsBlack(x,y)==IsBlack(x-idx,y-idx))&&(!NoPieces(x-idx,y-idx)))//å‘å·¦ä¸ŠæŸ¥æ‰¾
+		||((iDir==6)&&(IsBlack(x,y)==IsBlack(x+idx,y+idx))&&(!NoPieces(x+idx,y+idx)))//å‘å³ä¸‹æŸ¥æ‰¾
+		||((iDir==7)&&(IsBlack(x,y)==IsBlack(x+idx,y-idx))&&(!NoPieces(x+idx,y-idx)))//å‘å³ä¸ŠæŸ¥æ‰¾
+		||((iDir==8)&&(IsBlack(x,y)==IsBlack(x-idx,y+idx))&&(!NoPieces(x-idx,y+idx))))//å‘å·¦ä¸‹æŸ¥æ‰¾
 	{
 		bIsConnect=true;
 	}
 	return bIsConnect;
 }
 
-//·µ»ØÏàÁ¬Æå×Ó¸öÊı
+//è¿”å›ç›¸è¿æ£‹å­ä¸ªæ•°
 int CMainGobang::ConnectNum()
 {
-	int iConnect;//Á¬½ÓÆå×ÓÊı
-	int iGetNum;//²éÕÒÆå×ÓÊı
-	int icx,icy;//×ø±êÎ»ÒÆ¿ØÖÆÁ¿
-	int iTmp;//ÖĞ¼ä±äÁ¿
-	//×İÖá·½Ïò***************
+	int iConnect;//è¿æ¥æ£‹å­æ•°
+	int iGetNum;//æŸ¥æ‰¾æ£‹å­æ•°
+	int icx,icy;//åæ ‡ä½ç§»æ§åˆ¶é‡
+	int iTmp;//ä¸­é—´å˜é‡
+	//çºµè½´æ–¹å‘***************
 	iGetNum=iConnect=1;
 	icy=0;
-	while(iGetNum<5)//ÏòÉÏ²éÕÒ5´Î
+	while(iGetNum<5)//å‘ä¸ŠæŸ¥æ‰¾5æ¬¡
 	{
 		if(IsConnect(1,pPieces[iPieces-1].x,pPieces[iPieces-1].y+icy*idx))
 		{
@@ -399,7 +414,7 @@ int CMainGobang::ConnectNum()
 	}
 	iGetNum=1;
 	icy=0;
-	while(iGetNum<5)//ÔÙÏòÏÂ²éÕÒ
+	while(iGetNum<5)//å†å‘ä¸‹æŸ¥æ‰¾
 	{
 		if(IsConnect(2,pPieces[iPieces-1].x,pPieces[iPieces-1].y+icy*idx))
 		{
@@ -413,7 +428,7 @@ int CMainGobang::ConnectNum()
 		iGetNum++;
 	}
 	iTmp=iConnect;
-	//ºáÖá·½Ïò****************
+	//æ¨ªè½´æ–¹å‘****************
 	iGetNum=iConnect=1;
 	icx=0;
 	while(iGetNum<5)
@@ -445,7 +460,7 @@ int CMainGobang::ConnectNum()
 		iGetNum++;
 	}
 	iTmp=max(iTmp,iConnect);
-	//×óÉÏ-ÓÒÏÂ·½Ïò****************
+	//å·¦ä¸Š-å³ä¸‹æ–¹å‘****************
 	iGetNum=iConnect=1;
 	icx=icy=0;
 	while(iGetNum<5)
@@ -479,7 +494,7 @@ int CMainGobang::ConnectNum()
 		iGetNum++;
 	}
 	iTmp=max(iTmp,iConnect);
-	//ÓÒÉÏ-×óÏÂ·½Ïò****************
+	//å³ä¸Š-å·¦ä¸‹æ–¹å‘****************
 	iGetNum=iConnect=1;
 	icx=icy=0;
 	while(iGetNum<5)
@@ -516,186 +531,76 @@ int CMainGobang::ConnectNum()
 	return iConnect;
 }
 
-//·µ»ØÈõÏàÁ¬Æå×Ó¸öÊı
-//void CMainGobang::MaConnectNum(int iConnectNum,int iDir)
+////è¿”å›ç›¸è¿æ£‹å­æ–¹å‘
+//int CMainGobang::ConnectDir()
 //{
-//	int iGetNum;//²éÕÒÆå×ÓÊı
-//	int icx,icy;//×ø±êÎ»ÒÆ¿ØÖÆÁ¿
-//	int iTmp;//ÖĞ¼ä±äÁ¿
-//	//////////////////////////////ÏòÉÏ²éÕÒ////////////////////////////////
-//	iGetNum=iConnectNum=1;
-//	iDir=1;
-//	icy=0;
-//	while(iGetNum<5)
+//	int iDir;
+//	for(iDir=1;iDir<9;iDir++)
 //	{
-//		if(IsConnect(iDir,pPieces[iPieces-1].x,pPieces[iPieces-1].y+icy*idx))
+//		if(IsConnect(iDir,pPieces[iPieces-1].x,pPieces[iPieces-1].y))
 //		{
-//			iConnectNum++;
+//			return iDir;
 //		}
-//		icy--;
-//		iGetNum++;
 //	}
-//	//////////////////////////////ÏòÏÂ²éÕÒ////////////////////////////////
-//	iGetNum=1;
-//	icy=0;
-//	while(iGetNum<5)//ÔÙÏòÏÂ²éÕÒ
-//	{
-//		if(IsConnect(2,pPieces[iPieces-1].x,pPieces[iPieces-1].y+icy*idx))
-//		{
-//			iConnectNum++;
-//		}
-//		icy++;
-//		iGetNum++;
-//	}
-//	iTmp=iConnectNum;
-//	//ºáÖá·½Ïò****************
-//	iGetNum=iConnectNum=1;
-//	icx=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(3,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y))
-//		{
-//			iConnectNum++;
-//		}
-//		icx--;
-//		iGetNum++;
-//	}
-//	iGetNum=1;
-//	icx=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(4,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y))
-//		{
-//			iConnectNum++;
-//		}
-//		icx++;
-//		iGetNum++;
-//	}
-//	iTmp=max(iTmp,iConnectNum);
-//	//×óÉÏ-ÓÒÏÂ·½Ïò****************
-//	iGetNum=iConnectNum=1;
-//	icx=icy=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(5,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y+icy*idx))
-//		{
-//			iConnectNum++;
-//		}
-//		icx--;
-//		icy--;
-//		iGetNum++;
-//	}
-//	iGetNum=1;
-//	icx=icy=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(6,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y+icy*idx))
-//		{
-//			iConnectNum++;
-//		}
-//		icx++;
-//		icy++;
-//		iGetNum++;
-//	}
-//	iTmp=max(iTmp,iConnectNum);
-//	//ÓÒÉÏ-×óÏÂ·½Ïò****************
-//	iGetNum=iConnectNum=1;
-//	icx=icy=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(7,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y+icy*idx))
-//		{
-//			iConnectNum++;
-//		}
-//		icx++;
-//		icy--;
-//		iGetNum++;
-//	}
-//	iGetNum=1;
-//	icx=icy=0;
-//	while(iGetNum<5)
-//	{
-//		if(IsConnect(8,pPieces[iPieces-1].x+icx*idx,pPieces[iPieces-1].y+icy*idx))
-//		{
-//			iConnectNum++;
-//		}
-//		icx--;
-//		icy++;
-//		iGetNum++;
-//	}
-//	iConnectNum=max(iTmp,iConnectNum);
 //}
 
-//·µ»ØÏàÁ¬Æå×Ó·½Ïò
-int CMainGobang::ConnectDir()
-{
-	int iDir;
-	for(iDir=1;iDir<9;iDir++)
-	{
-		if(IsConnect(iDir,pPieces[iPieces-1].x,pPieces[iPieces-1].y))
-		{
-			return iDir;
-		}
-	}
-}
+//æœºå™¨ä¸‹æ£‹å‡½æ•°
+//void CMainGobang::MachineDraw(CDC *pDC)
+//{
+//	int x,y;
+//	///////////First Machine Pieces////////////////////////////////
+//	if(iPieces==1)
+//	{
+//		//Always in top
+//		x=pPieces[iPieces-1].x+idx;
+//		y=pPieces[iPieces-1].y;
+//		pDC->Ellipse(x-10,y-10,x+10,y+10);
+//		//èµ‹å€¼
+//		pPieces[iPieces].bIsPieces=true;
+//		pPieces[iPieces].x=x;
+//		pPieces[iPieces].y=y;
+//		//è®¡æ•°åŠ 1
+//		iPieces++;
+//	}
+//	////////////////////////////////////////////////
+//	///////////Defence Part
+//	///////////////////////////////////////////////
+//	if(ConnectNum()==2)
+//	{
+//		if(ConnectDir()==1)
+//		{
+//			x=pPieces[iPieces-1].x;
+//			y=abs(pPieces[iPieces-1].y+idx-pPieces[iPieces-2].y)<abs(pPieces[iPieces-1].y-2*idx-pPieces[iPieces-2].y)?
+//				pPieces[iPieces-1].y+idx:pPieces[iPieces-1].y-2*idx;
+//			pDC->Ellipse(x-10,y-10,x+10,y+10);
+//			//èµ‹å€¼
+//			pPieces[iPieces].bIsPieces=true;
+//			pPieces[iPieces].x=x;
+//			pPieces[iPieces].y=y;
+//			//è®¡æ•°åŠ 1
+//			iPieces++;
+//		}
+//		if(ConnectDir()==2)
+//		{
+//			x=pPieces[iPieces-1].x;
+//			y=abs(pPieces[iPieces-1].y+2*idx-pPieces[iPieces-2].y)<abs(pPieces[iPieces-1].y-idx-pPieces[iPieces-2].y)?
+//				pPieces[iPieces-1].y+2*idx:pPieces[iPieces-1].y-idx;
+//			pDC->Ellipse(x-10,y-10,x+10,y+10);
+//			//èµ‹å€¼
+//			pPieces[iPieces].bIsPieces=true;
+//			pPieces[iPieces].x=x;
+//			pPieces[iPieces].y=y;
+//			//è®¡æ•°åŠ 1
+//			iPieces++;
+//		}
+//	}
+//	///////////////////////////////////////
+//	//è¿›æ”»æ¨¡å—
+//	///////////////////////////////////////
+//
+//}
 
-//»úÆ÷ÏÂÆåº¯Êı
-void CMainGobang::MachineDraw(CDC *pDC)
-{
-	int x,y;
-	///////////First Machine Pieces////////////////////////////////
-	if(iPieces==1)
-	{
-		//Always in top
-		x=pPieces[iPieces-1].x+idx;
-		y=pPieces[iPieces-1].y;
-		pDC->Ellipse(x-10,y-10,x+10,y+10);
-		//¸³Öµ
-		pPieces[iPieces].bIsPieces=true;
-		pPieces[iPieces].x=x;
-		pPieces[iPieces].y=y;
-		//¼ÆÊı¼Ó1
-		iPieces++;
-	}
-	////////////////////////////////////////////////
-	///////////Defence Part
-	///////////////////////////////////////////////
-	if(ConnectNum()==2)
-	{
-		if(ConnectDir()==1)
-		{
-			x=pPieces[iPieces-1].x;
-			y=abs(pPieces[iPieces-1].y+idx-pPieces[iPieces-2].y)<abs(pPieces[iPieces-1].y-2*idx-pPieces[iPieces-2].y)?
-				pPieces[iPieces-1].y+idx:pPieces[iPieces-1].y-2*idx;
-			pDC->Ellipse(x-10,y-10,x+10,y+10);
-			//¸³Öµ
-			pPieces[iPieces].bIsPieces=true;
-			pPieces[iPieces].x=x;
-			pPieces[iPieces].y=y;
-			//¼ÆÊı¼Ó1
-			iPieces++;
-		}
-		if(ConnectDir()==2)
-		{
-			x=pPieces[iPieces-1].x;
-			y=abs(pPieces[iPieces-1].y+2*idx-pPieces[iPieces-2].y)<abs(pPieces[iPieces-1].y-idx-pPieces[iPieces-2].y)?
-				pPieces[iPieces-1].y+2*idx:pPieces[iPieces-1].y-idx;
-			pDC->Ellipse(x-10,y-10,x+10,y+10);
-			//¸³Öµ
-			pPieces[iPieces].bIsPieces=true;
-			pPieces[iPieces].x=x;
-			pPieces[iPieces].y=y;
-			//¼ÆÊı¼Ó1
-			iPieces++;
-		}
-	}
-	///////////////////////////////////////
-	//½ø¹¥Ä£¿é
-	///////////////////////////////////////
-
-}
-
-//ÅĞ¶ÏÊÇ·ñÊ¤Àû
+//åˆ¤æ–­æ˜¯å¦èƒœåˆ©
 bool CMainGobang::Success()
 {
 	bool bSuccess;
@@ -704,42 +609,42 @@ bool CMainGobang::Success()
 	{
 		if(pPieces[iPieces-1].bIsBlack)
 		{
-			AfxMessageBox(_T("ºÚÆåÊ¤Àû!"));
+			AfxMessageBox(_T("é»‘æ£‹èƒœåˆ©!"));
 		}
 		if(!pPieces[iPieces-1].bIsBlack)
 		{
-			AfxMessageBox(_T("°×ÆåÊ¤Àû!"));
+			AfxMessageBox(_T("ç™½æ£‹èƒœåˆ©!"));
 		}
 		bSuccess=true;
 	}
 	return bSuccess;
 }
 
-//¸´ÅÌ±ê¼Çº¯Êı
+//å¤ç›˜æ ‡è®°å‡½æ•°
 void CMainGobang::ReplayMark(CDC *pDC)
 {
-	CString strNum;//Êı×Ö±ê¼Ç
-	//Éè¶¨×ÖÌå
-	CFont m_newFont;//ÓÃÓÚÊä³ö×ø±ê×Ö·û´®µÄ×ÖÌå
-	CFont *m_OldFont;//ÓÃÓÚ»¹Ô­Ô­À´µÄ×ÖÌå
-	m_newFont.CreatePointFont(80,_T("ËÎÌå"));//´´½¨×ÖÌå£¬8*n¸öÏñËØ¸ßµÄËÎÌå
-	m_OldFont = (CFont*)pDC->SelectObject(&m_newFont);//½«×ÖÌå¸³ÓèÉè±¸ÉÏÏÂÎÄ
-	pDC->SetBkMode(TRANSPARENT);//ÉèÖÃÊä³ö×ÖÌåµÄ±³¾°Í¸Ã÷
-	//Êä³ö×ø±êÖµµ½»æÍ¼¿Ø¼ş
+	CString strNum;//æ•°å­—æ ‡è®°
+	//è®¾å®šå­—ä½“
+	CFont m_newFont;//ç”¨äºè¾“å‡ºåæ ‡å­—ç¬¦ä¸²çš„å­—ä½“
+	CFont *m_OldFont;//ç”¨äºè¿˜åŸåŸæ¥çš„å­—ä½“
+	m_newFont.CreatePointFont(80,_T("å®‹ä½“"));//åˆ›å»ºå­—ä½“ï¼Œ8*nä¸ªåƒç´ é«˜çš„å®‹ä½“
+	m_OldFont = (CFont*)pDC->SelectObject(&m_newFont);//å°†å­—ä½“èµ‹äºˆè®¾å¤‡ä¸Šä¸‹æ–‡
+	pDC->SetBkMode(TRANSPARENT);//è®¾ç½®è¾“å‡ºå­—ä½“çš„èƒŒæ™¯é€æ˜
+	//è¾“å‡ºåæ ‡å€¼åˆ°ç»˜å›¾æ§ä»¶
 	for(int i=0;i<iPieces;i++)
 	{
 		strNum.Format(_T("%d"),i+1);
 		if(i%2==0)
 		{
-			pDC->SetTextColor(RGB(255,255,255));//ÉèÖÃ×ÖÌåÑÕÉ«
+			pDC->SetTextColor(RGB(255,255,255));//è®¾ç½®å­—ä½“é¢œè‰²
 		}
 		else
 		{
-			pDC->SetTextColor(RGB(0,0,0));//ÉèÖÃ×ÖÌåÑÕÉ«
+			pDC->SetTextColor(RGB(0,0,0));//è®¾ç½®å­—ä½“é¢œè‰²
 		}
 		pDC->TextOut(pPieces[i].x-5,pPieces[i].y-5,strNum);
 	}
-	pDC->SelectObject(m_OldFont);//»Ö¸´Ô­×ÖÌå
+	pDC->SelectObject(m_OldFont);//æ¢å¤åŸå­—ä½“
 	if(pPieces!=NULL)
 	{
 		delete []pPieces;
