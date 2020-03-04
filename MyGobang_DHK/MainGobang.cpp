@@ -109,8 +109,11 @@ void CMainGobang::DrawRectangle(CDC *pDC,CPoint pt)
 		CPen *OldPen = pDC->SelectObject(&pen);
 		//获取离鼠标位置最近的棋格
 		int x, y;//棋格坐标
-		x = xmin+int(double(pt.x - xmin) / idx + 0.5)*idx;
-		y = ymin+int(double(pt.y - ymin) / idx + 0.5)*idx;
+		int iTmp;
+		iTmp = int(double(pt.x - xmin) / idx + 0.5);
+		x = iTmp < 0 ? xmin : xmin + iTmp * idx;//不允许画出棋盘外
+		iTmp = int(double(pt.y - ymin) / idx + 0.5);
+		y = iTmp < 0 ? ymin : ymin + iTmp * idx;
 		x = x > xmax ? xmax : x;
 		y = y > ymax ? ymax : y;
 		//若此处无棋子 无选中框
@@ -188,8 +191,11 @@ void CMainGobang::DrawPieces(CDC *pDC,CRect rect,CPoint pt)
 	{
 		//获取离鼠标位置最近的棋格
 		int x, y;//棋格坐标
-		x = xmin + int(double(pt.x - xmin) / idx + 0.5)*idx;
-		y = ymin + int(double(pt.y - ymin) / idx + 0.5)*idx;
+		int iTmp;
+		iTmp = int(double(pt.x - xmin) / idx + 0.5);
+		x = iTmp < 0 ? xmin : xmin + iTmp * idx;//不允许画出棋盘外
+		iTmp = int(double(pt.y - ymin) / idx + 0.5);
+		y = iTmp < 0 ? ymin : ymin + iTmp * idx;
 		x = x > xmax ? xmax : x;
 		y = y > ymax ? ymax : y;
 		if (NoPieces(x, y))
