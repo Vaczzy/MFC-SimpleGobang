@@ -27,7 +27,7 @@ private:
 	int iPiecesNum;//棋子总数
 	Pieces *pPieces;//棋子
 	/////rectangle information
-	int iRectangleNum;//选中框个数
+	int iRectangle;//当前选中框计数
 	MyRectangle *pmyRectangle;//选中框
 	/////for draw rectangle&draw pieces
 	bool NoRectangle(int x,int y);//判断该位置上是否有选中框
@@ -45,7 +45,7 @@ public:
 	void DrawRectangle(CDC *pDC,CPoint pt);//绘制选中框/返回是否绘制
 	void DrawPieces(CDC *pDC,CRect rect,CPoint pt);//绘制棋子函数
 	bool ClearPieces(CDC *pDC,bool &bBlack);//清除棋子函数/用于悔棋
-	void KeepPieces(CDC *pDC,CRect rect,int iTableSize);//循环绘制棋子 //用以解决刷新问题
+	void KeepPieces(CDC *pDC,CRect rect);//循环绘制棋子 //用以解决刷新问题
 	//void MachineDraw(CDC *pDC);//机器下棋函数
 
 	bool Success();//判断胜利函数
