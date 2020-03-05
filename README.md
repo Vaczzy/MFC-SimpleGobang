@@ -6,7 +6,8 @@ SimpleGobang程序简述
 
 说它简单的原因是这个程序目前还只能做一些比较基础的操作。比如下棋、判断胜负和复盘等...
 
-运行截图：![image](https://github.com/Vaczzy/MFC-SimpleGobang/Img/RUN.PNG)
+运行截图：![image](https://github.com/Vaczzy/MFC-SimpleGobang/Img/Run.PNG)
+![image](https://github.com/Vaczzy/MFC-SimpleGobang/Img/Success.PNG)
 
 代码对于C++ MFC编程新手来说十分友好。
 ## 我为什么编写这个程序？
