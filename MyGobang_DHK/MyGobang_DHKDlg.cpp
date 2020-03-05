@@ -116,6 +116,7 @@ BOOL CMyGobang_DHKDlg::OnInitDialog()
 	bIsReady=false;
 	bIsMachine=false;
 	bDrawPieces=false;
+	bWithdraw = true;
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -194,8 +195,6 @@ void CMyGobang_DHKDlg::OnBnClickedButtonStart()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	bIsReady=true;
-	bIsMachine=false;
-	bWithdraw=true;
 	OnPaint();//参数设置完成后 再绘制棋盘
 	gobang.SetPieces();
 	SetTimer(1, 40, NULL);
@@ -210,12 +209,16 @@ void CMyGobang_DHKDlg::OnMouseMove(UINT nFlags, CPoint point)
 	CRect rect;
 	GetDlgItem(IDC_MainTable)->GetWindowRect(&rect);//获取控件屏幕坐标
 	GetCursorPos(&pt);//获取鼠标点击坐标(屏幕坐标坐标)
-	pt.x-=rect.left;//转化为控件中坐标
-	pt.y-=rect.top;
-	CDC *pDC=picMain.GetDC();//获取该控件的画布
-	if(bIsReady)
+	//该位置判断前移至此函数中2020.03.05
+	if (rect.PtInRect(pt)) //如果鼠标在这个范围之内
 	{
-		gobang.DrawRectangle(pDC,pt);
+		pt.x -= rect.left;//转化为控件中坐标
+		pt.y -= rect.top;
+		CDC *pDC = picMain.GetDC();//获取该控件的画布
+		if (bIsReady)
+		{
+			gobang.DrawRectangle(pDC, pt);
+		}
 	}
 	CDialogEx::OnMouseMove(nFlags, point);
 }
@@ -235,21 +238,19 @@ void CMyGobang_DHKDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	    GetDlgItem(IDC_MainTable)->GetWindowRect(&rect);//获取控件屏幕坐标
 		CPoint pt;
 		GetCursorPos(&pt);//获取鼠标点击坐标(屏幕坐标坐标)
-		pt.x -= rect.left;//转化为控件中坐标
-		pt.y -= rect.top;
-		CDC *pDC=picMain.GetDC();//获取该控件的画布
-		gobang.DrawPieces(pDC,rect,pt);//绘制棋子
-		//SetTimer(1,40,NULL);
-		//if(bIsMachine)
-		//{
-		//	gobang.MachineDraw(pDC);//机器下棋
-		//}
-		if(gobang.Success())//执行胜利判断函数
+		//该位置判断前移至此函数中2020.03.05
+		if (rect.PtInRect(pt)) //如果鼠标在这个范围之内
 		{
-			KillTimer(1);
-			gobang.ReplayMark(pDC);
-			bIsReady=false;
-			gobang.~CMainGobang();
+			pt.x -= rect.left;//转化为控件中坐标
+			pt.y -= rect.top;
+			CDC *pDC = picMain.GetDC();//获取该控件的画布
+			gobang.DrawPieces(pDC, rect, pt);//绘制棋子
+			if (gobang.Success())//执行胜利判断函数
+			{
+				KillTimer(1);
+				gobang.ReplayMark(pDC);
+				bIsReady = false;
+			}
 		}
 	}
 	CDialogEx::OnLButtonDown(nFlags, point);
@@ -277,7 +278,7 @@ void CMyGobang_DHKDlg::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case 1:
-		gobang.KeepPieces(pDC,rect,15);
+		gobang.KeepPieces(pDC,rect);
 		break;
 	}
 	CDialogEx::OnTimer(nIDEvent);
