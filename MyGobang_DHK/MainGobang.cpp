@@ -10,16 +10,6 @@ CMainGobang::CMainGobang(void)
 
 CMainGobang::~CMainGobang(void)
 {
-	if(pPieces!=NULL)
-	{
-		delete []pPieces;
-		pPieces=NULL;
-	}
-	if(pmyRectangle!=NULL)
-	{
-		delete []pmyRectangle;
-		pmyRectangle=NULL;
-	}
 	//AfxMessageBox(_T("主类执行了析构函数"));
 }
 
@@ -41,7 +31,7 @@ void CMainGobang::DrawMainTable(CDC *pDC,CRect rect,int iTableSize)
 		(rect.bottom-rect.top)/(iTableSize+1):
 	    (rect.right-rect.left)/(iTableSize+1);
 	CBrush brush(RGB(0,0,0));
-	CBrush *OldBrush=pDC->SelectObject(&brush);
+	CBrush *OldBrush= (CBrush*)pDC->SelectObject(&brush);
 	int ixp,iyp;//棋盘星坐标
 	//绘制天元
 	ixp=(rect.right-rect.left)/2;
@@ -194,8 +184,9 @@ void CMainGobang::DrawPieces(CDC *pDC,CRect rect,CPoint pt)
 	if (NoPieces(x, y))
 	{
 		//画棋子
-		CBrush brush(RGB(iColor, iColor, iColor));
-		CBrush *OldBrush = pDC->SelectObject(&brush);
+		CBrush brush;
+		brush.CreateSolidBrush(RGB(iColor, iColor, iColor));
+		CBrush *OldBrush = (CBrush*)pDC->SelectObject(&brush);
 		pDC->Ellipse(x - 10, y - 10, x + 10, y + 10);
 		pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
 		brush.DeleteObject();//释放绘图资源
@@ -294,8 +285,9 @@ void CMainGobang::KeepPieces(CDC *pDC,CRect rect)
 					iTmp = 255;
 				}
 				//画棋子
-				CBrush brush(RGB(iTmp, iTmp, iTmp));
-				CBrush *OldBrush = pDC->SelectObject(&brush);
+				CBrush brush;
+				brush.CreateSolidBrush(RGB(iTmp, iTmp, iTmp));
+				CBrush *OldBrush = (CBrush*)pDC->SelectObject(&brush);
 				pDC->Ellipse(pPieces[i].x - 10, pPieces[i].y - 10, pPieces[i].x + 10, pPieces[i].y + 10);
 				pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
 				brush.DeleteObject();//释放绘图资源
@@ -350,10 +342,7 @@ bool CMainGobang::NoPieces(int x,int y)
 			}
 		}
 	}
-	else 
-	{
-		return true;
-	}
+	return true;
 }
 
 //判断该位置上棋子颜色
