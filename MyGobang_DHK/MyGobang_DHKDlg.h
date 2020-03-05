@@ -34,7 +34,6 @@ public:
 	CMainGobang gobang;
 	CStatic picMain;//画图控件
 	bool bIsReady;//可以开始human vs human
-	bool bDrawPieces;//可以开始画棋子
 	bool bIsMachine;//human vs machine
 	bool bWithdraw;//悔棋次数
 	afx_msg void OnBnClickedButtonStart();
