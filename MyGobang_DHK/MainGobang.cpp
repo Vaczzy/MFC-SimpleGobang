@@ -94,121 +94,116 @@ void CMainGobang::SetPieces()
 			pPieces[i].bIsBlack=true;//单数为黑棋子
 		}
 	}
-	iRectangleNum=0;
+	iRectangle=0;
 	pmyRectangle=new MyRectangle[2];//生成选中框存储单元
 }
 
 //绘制选中框
 void CMainGobang::DrawRectangle(CDC *pDC,CPoint pt)
 {
-	//修复鼠标位置在窗口外的情况2020.03.04
-	if (pt.x >= 0 && pt.y >= 0)
+	CPen pen;
+	pen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));//创建画笔
+	CPen *OldPen = pDC->SelectObject(&pen);
+	//获取离鼠标位置最近的棋格
+	int x, y;//棋格坐标
+	int iTmp;
+	iTmp = int(double(pt.x - xmin) / idx + 0.5);
+	x = iTmp < 0 ? xmin : xmin + iTmp * idx;//不允许画出棋盘外
+	iTmp = int(double(pt.y - ymin) / idx + 0.5);
+	y = iTmp < 0 ? ymin : ymin + iTmp * idx;
+	x = x > xmax ? xmax : x;
+	y = y > ymax ? ymax : y;
+	//若此处无棋子 无选中框
+	if ((NoPieces(x, y)) && (NoRectangle(x, y)))
+	{
+		//画选中框
+		pDC->MoveTo(x - 10, y - 5);
+		pDC->LineTo(x - 10, y - 10);
+		pDC->LineTo(x - 5, y - 10);
+
+		pDC->MoveTo(x + 10, y - 5);
+		pDC->LineTo(x + 10, y - 10);
+		pDC->LineTo(x + 5, y - 10);
+
+		pDC->MoveTo(x - 10, y + 5);
+		pDC->LineTo(x - 10, y + 10);
+		pDC->LineTo(x - 5, y + 10);
+
+		pDC->MoveTo(x + 10, y + 5);
+		pDC->LineTo(x + 10, y + 10);
+		pDC->LineTo(x + 5, y + 10);
+		//赋值
+		pmyRectangle[iRectangle].x = x;
+		pmyRectangle[iRectangle].y = y;
+		iRectangle++;//选中框个数加1
+	}
+	if (iRectangle == 2)
 	{
 		CPen pen;
-		pen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));//创建画笔
+		pen.CreatePen(PS_SOLID, 1, RGB(240, 240, 240));//创建画笔
 		CPen *OldPen = pDC->SelectObject(&pen);
-		//获取离鼠标位置最近的棋格
-		int x, y;//棋格坐标
-		int iTmp;
-		iTmp = int(double(pt.x - xmin) / idx + 0.5);
-		x = iTmp < 0 ? xmin : xmin + iTmp * idx;//不允许画出棋盘外
-		iTmp = int(double(pt.y - ymin) / idx + 0.5);
-		y = iTmp < 0 ? ymin : ymin + iTmp * idx;
-		x = x > xmax ? xmax : x;
-		y = y > ymax ? ymax : y;
-		//若此处无棋子 无选中框
-		if ((NoPieces(x, y)) && (NoRectangle(x, y)))
-		{
-			//画选中框
-			pDC->MoveTo(x - 10, y - 5);
-			pDC->LineTo(x - 10, y - 10);
-			pDC->LineTo(x - 5, y - 10);
+		int x, y;
+		x = pmyRectangle[0].x;
+		y = pmyRectangle[0].y;
+		//清除选中框
+		pDC->MoveTo(x - 10, y - 5);
+		pDC->LineTo(x - 10, y - 10);
+		pDC->LineTo(x - 5, y - 10);
 
-			pDC->MoveTo(x + 10, y - 5);
-			pDC->LineTo(x + 10, y - 10);
-			pDC->LineTo(x + 5, y - 10);
+		pDC->MoveTo(x + 10, y - 5);
+		pDC->LineTo(x + 10, y - 10);
+		pDC->LineTo(x + 5, y - 10);
 
-			pDC->MoveTo(x - 10, y + 5);
-			pDC->LineTo(x - 10, y + 10);
-			pDC->LineTo(x - 5, y + 10);
+		pDC->MoveTo(x - 10, y + 5);
+		pDC->LineTo(x - 10, y + 10);
+		pDC->LineTo(x - 5, y + 10);
 
-			pDC->MoveTo(x + 10, y + 5);
-			pDC->LineTo(x + 10, y + 10);
-			pDC->LineTo(x + 5, y + 10);
-			//赋值
-			pmyRectangle[iRectangleNum].x = x;
-			pmyRectangle[iRectangleNum].y = y;
-			iRectangleNum++;
-		}
-		if (iRectangleNum == 2)
-		{
-			CPen pen;
-			pen.CreatePen(PS_SOLID, 1, RGB(240, 240, 240));//创建画笔
-			CPen *OldPen = pDC->SelectObject(&pen);
-			int x, y;
-			x = pmyRectangle[0].x;
-			y = pmyRectangle[0].y;
-			//清除选中框
-			pDC->MoveTo(x - 10, y - 5);
-			pDC->LineTo(x - 10, y - 10);
-			pDC->LineTo(x - 5, y - 10);
-
-			pDC->MoveTo(x + 10, y - 5);
-			pDC->LineTo(x + 10, y - 10);
-			pDC->LineTo(x + 5, y - 10);
-
-			pDC->MoveTo(x - 10, y + 5);
-			pDC->LineTo(x - 10, y + 10);
-			pDC->LineTo(x - 5, y + 10);
-
-			pDC->MoveTo(x + 10, y + 5);
-			pDC->LineTo(x + 10, y + 10);
-			pDC->LineTo(x + 5, y + 10);
-			//重置赋值
-			pmyRectangle[0].x = pmyRectangle[1].x;
-			pmyRectangle[0].y = pmyRectangle[1].y;
-			iRectangleNum = 1;//重置计数
-		}
-		pDC->SelectObject(OldPen);//恢复设备环境中原来的画笔
-		pen.DeleteObject();//释放绘图资源
+		pDC->MoveTo(x + 10, y + 5);
+		pDC->LineTo(x + 10, y + 10);
+		pDC->LineTo(x + 5, y + 10);
+		//重置赋值
+		pmyRectangle[0].x = pmyRectangle[1].x;
+		pmyRectangle[0].y = pmyRectangle[1].y;
+		iRectangle = 1;//重置计数
 	}
+	pDC->SelectObject(OldPen);//恢复设备环境中原来的画笔
+	pen.DeleteObject();//释放绘图资源
 }
 
 //绘制棋子函数
 void CMainGobang::DrawPieces(CDC *pDC,CRect rect,CPoint pt)
 {
-	int iTmp;
+	int iColor;
 	if(pPieces[iPieces].bIsBlack==true)//黑棋子
 	{
-		iTmp=0;
+		iColor=0;
 	}
 	if(pPieces[iPieces].bIsBlack==false)//白棋子
 	{
-		iTmp=255;
+		iColor=255;
 	}
-	//修复鼠标位置在窗口外的情况2020.03.04
-	if (pt.x >= 0 && pt.y >= 0)
+	//获取离鼠标位置最近的棋格
+	int x, y;//棋格坐标
+	int iTmp;
+	iTmp = int(double(pt.x - xmin) / idx + 0.5);
+	x = iTmp < 0 ? xmin: xmin + iTmp * idx;//不允许画出棋盘外
+	iTmp = int(double(pt.y - ymin) / idx + 0.5);
+	y = iTmp < 0 ? ymin : ymin + iTmp * idx;
+	x = x > xmax ? xmax : x;
+	y = y > ymax ? ymax : y;
+	if (NoPieces(x, y))
 	{
-		//获取离鼠标位置最近的棋格
-		int x, y;//棋格坐标
-		int iTmp;
-		iTmp = int(double(pt.x - xmin) / idx + 0.5);
-		x = iTmp < 0 ? xmin : xmin + iTmp * idx;//不允许画出棋盘外
-		iTmp = int(double(pt.y - ymin) / idx + 0.5);
-		y = iTmp < 0 ? ymin : ymin + iTmp * idx;
-		x = x > xmax ? xmax : x;
-		y = y > ymax ? ymax : y;
-		if (NoPieces(x, y))
+		//画棋子
+		CBrush brush(RGB(iColor, iColor, iColor));
+		CBrush *OldBrush = pDC->SelectObject(&brush);
+		pDC->Ellipse(x - 10, y - 10, x + 10, y + 10);
+		pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
+		brush.DeleteObject();//释放绘图资源
+		//清除标记
+		if (iPieces > 0)
 		{
-			//画棋子
-			CBrush brush(RGB(iTmp, iTmp, iTmp));
-			CBrush *OldBrush = pDC->SelectObject(&brush);
-			pDC->Ellipse(x - 10, y - 10, x + 10, y + 10);
-			pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
-			brush.DeleteObject();//释放绘图资源
-			//清除标记
 			CPen penClearMark;//用于清除标记的画笔
-			penClearMark.CreatePen(PS_SOLID, 1, RGB(abs(iTmp - 255), abs(iTmp - 255), abs(iTmp - 255)));
+			penClearMark.CreatePen(PS_SOLID, 1, RGB(abs(iColor - 255), abs(iColor - 255), abs(iColor - 255)));
 			CPen *OldPenClearMark = pDC->SelectObject(&penClearMark);
 			pDC->MoveTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y - 3);
 			pDC->LineTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y + 4);
@@ -216,23 +211,23 @@ void CMainGobang::DrawPieces(CDC *pDC,CRect rect,CPoint pt)
 			pDC->LineTo(pPieces[iPieces - 1].x + 4, pPieces[iPieces - 1].y);
 			pDC->SelectObject(OldPenClearMark);//恢复设备环境中原来的画笔
 			penClearMark.DeleteObject();//释放绘图资源
-			//画标记
-			CPen penMark;//用于绘制标记的画笔
-			penMark.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
-			CPen *OldPenMark = pDC->SelectObject(&penMark);
-			pDC->MoveTo(x, y - 3);
-			pDC->LineTo(x, y + 4);//弥补增量太小导致的不对称
-			pDC->MoveTo(x - 3, y);
-			pDC->LineTo(x + 4, y);
-			pDC->SelectObject(OldPenMark);//恢复设备环境中原来的画笔
-			penMark.DeleteObject();//释放绘图资源
-			//赋值
-			pPieces[iPieces].bIsPieces = true;
-			pPieces[iPieces].x = x;
-			pPieces[iPieces].y = y;
-			//计数加1
-			iPieces++;
 		}
+		//画标记
+		CPen penMark;//用于绘制标记的画笔
+		penMark.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+		CPen *OldPenMark = pDC->SelectObject(&penMark);
+		pDC->MoveTo(x, y - 3);
+		pDC->LineTo(x, y + 4);//弥补增量太小导致的不对称
+		pDC->MoveTo(x - 3, y);
+		pDC->LineTo(x + 4, y);
+		pDC->SelectObject(OldPenMark);//恢复设备环境中原来的画笔
+		penMark.DeleteObject();//释放绘图资源
+		//赋值
+		pPieces[iPieces].bIsPieces = true;
+		pPieces[iPieces].x = x;
+		pPieces[iPieces].y = y;
+		//计数加1
+		iPieces++;
 	}
 }
 
@@ -280,42 +275,42 @@ bool CMainGobang::ClearPieces(CDC *pDC,bool &bBlack)
 }
 
 //循环绘制棋子 //用以解决刷新问题
-void CMainGobang::KeepPieces(CDC *pDC,CRect rect,int iTableSize)
+void CMainGobang::KeepPieces(CDC *pDC,CRect rect)
 {
-	ymin=(rect.bottom-rect.top)/2-(iTableSize-1)/2*idx;
-	ymax=ymin+(iTableSize-1)*idx;
-	xmin=(rect.right-rect.left)/2-(iTableSize-1)/2*idx;
-	xmax=xmin+(iTableSize-1)*idx;
 	int iTmp;
-	for(int i=0;i<iPieces;i++)
+	//若棋子个数大于0
+	if (iPieces > 0)
 	{
-		if(!NoPieces(pPieces[i].x,pPieces[i].y))
+		for (int i = 0; i < iPieces; i++)
 		{
-			if(i%2==0)//黑棋子
+			if (!NoPieces(pPieces[i].x, pPieces[i].y))
 			{
-				iTmp=0;
+				if (i % 2 == 0)//黑棋子
+				{
+					iTmp = 0;
+				}
+				else//白棋子
+				{
+					iTmp = 255;
+				}
+				//画棋子
+				CBrush brush(RGB(iTmp, iTmp, iTmp));
+				CBrush *OldBrush = pDC->SelectObject(&brush);
+				pDC->Ellipse(pPieces[i].x - 10, pPieces[i].y - 10, pPieces[i].x + 10, pPieces[i].y + 10);
+				pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
+				brush.DeleteObject();//释放绘图资源
 			}
-			else//白棋子
-			{
-				iTmp=255;
-			}
-			//画棋子
-			CBrush brush(RGB(iTmp,iTmp,iTmp));
-			CBrush *OldBrush=pDC->SelectObject(&brush);
-			pDC->Ellipse(pPieces[i].x-10,pPieces[i].y-10,pPieces[i].x+10,pPieces[i].y+10);
-			pDC->SelectObject(OldBrush);//恢复设备环境中原来的画笔
-			brush.DeleteObject();//释放绘图资源
-			//画标记
-			CPen penMark;//用于绘制标记的画笔
-			penMark.CreatePen(PS_SOLID,1,RGB(255,0,0));
-			CPen *OldPenMark=pDC->SelectObject(&penMark);
-			pDC->MoveTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y-3);
-			pDC->LineTo(pPieces[iPieces-1].x,pPieces[iPieces-1].y+4);//弥补增量太小导致的不对称
-			pDC->MoveTo(pPieces[iPieces-1].x-3,pPieces[iPieces-1].y);
-			pDC->LineTo(pPieces[iPieces-1].x+4,pPieces[iPieces-1].y);
-			pDC->SelectObject(OldPenMark);//恢复设备环境中原来的画笔
-			penMark.DeleteObject();//释放绘图资源
 		}
+		//画标记
+		CPen penMark;//用于绘制标记的画笔
+		penMark.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+		CPen *OldPenMark = pDC->SelectObject(&penMark);
+		pDC->MoveTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y - 3);
+		pDC->LineTo(pPieces[iPieces - 1].x, pPieces[iPieces - 1].y + 4);//弥补增量太小导致的不对称
+		pDC->MoveTo(pPieces[iPieces - 1].x - 3, pPieces[iPieces - 1].y);
+		pDC->LineTo(pPieces[iPieces - 1].x + 4, pPieces[iPieces - 1].y);
+		pDC->SelectObject(OldPenMark);//恢复设备环境中原来的画笔
+		penMark.DeleteObject();//释放绘图资源
 	}
 }
 
@@ -337,22 +332,28 @@ bool CMainGobang::NoRectangle(int x,int y)
 //判断该位置上是否有棋子
 bool CMainGobang::NoPieces(int x,int y)
 {
-	for(int i=0;i<iPiecesNum;i++)
+	//若棋子个数大于0//2020.03.05
+	if (iPieces > 0)
 	{
-		if((x==pPieces[i].x)&&(y==pPieces[i].y))//没有下棋时，pPieces的x,y皆为空值
+		for (int i = 0; i < iPieces; i++)
 		{
-			if (pPieces[i].bIsPieces)
+			if ((x == pPieces[i].x) && (y == pPieces[i].y))//没有下棋时，pPieces的x,y皆为空值
 			{
-				return false;
-			}
-			else
-			{
-				return true;
+				if (pPieces[i].bIsPieces)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
 			}
 		}
 	}
-	//2020.03.04修复了没有返回值的情况
-	return true;
+	else 
+	{
+		return true;
+	}
 }
 
 //判断该位置上棋子颜色
@@ -655,5 +656,10 @@ void CMainGobang::ReplayMark(CDC *pDC)
 	{
 		delete []pPieces;
 		pPieces=NULL;
+	}
+	if (pmyRectangle != NULL)
+	{
+		delete[]pmyRectangle;
+		pmyRectangle = NULL;
 	}
 }
