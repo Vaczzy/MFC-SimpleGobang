@@ -1,30 +1,30 @@
 
-// MyGobang_DHKDlg.h : Í·ÎÄ¼ş
+// MyGobang_DHKDlg.h : å¤´æ–‡ä»¶
 //
 
 #pragma once
 #include "afxwin.h"
 #include "MainGobang.h"
 
-// CMyGobang_DHKDlg ¶Ô»°¿ò
+// CMyGobang_DHKDlg å¯¹è¯æ¡†
 class CMyGobang_DHKDlg : public CDialogEx
 {
-// ¹¹Ôì
+// æ„é€ 
 public:
-	CMyGobang_DHKDlg(CWnd* pParent = NULL);	// ±ê×¼¹¹Ôìº¯Êı
+	CMyGobang_DHKDlg(CWnd* pParent = NULL);	// æ ‡å‡†æ„é€ å‡½æ•°
 
-// ¶Ô»°¿òÊı¾İ
+// å¯¹è¯æ¡†æ•°æ®
 	enum { IDD = IDD_MYGOBANG_DHK_DIALOG };
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV æ”¯æŒ
 
 
-// ÊµÏÖ
+// å®ç°
 protected:
 	HICON m_hIcon;
 
-	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
+	// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
@@ -32,12 +32,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CMainGobang gobang;
-	CStatic picMain;//»­Í¼¿Ø¼ş
-	CPoint pt;//Êó±êµã»÷µã
-	bool bIsReady;//¿ÉÒÔ¿ªÊ¼human vs human
-	bool bDrawPieces;//¿ÉÒÔ¿ªÊ¼»­Æå×Ó
+	CStatic picMain;//ç”»å›¾æ§ä»¶
+	bool bIsReady;//å¯ä»¥å¼€å§‹human vs human
+	bool bDrawPieces;//å¯ä»¥å¼€å§‹ç”»æ£‹å­
 	bool bIsMachine;//human vs machine
-	bool bWithdraw;//»ÚÆå´ÎÊı
+	bool bWithdraw;//æ‚”æ£‹æ¬¡æ•°
 	afx_msg void OnBnClickedButtonStart();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
