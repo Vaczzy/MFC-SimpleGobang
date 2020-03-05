@@ -115,7 +115,6 @@ BOOL CMyGobang_DHKDlg::OnInitDialog()
 	((CButton *)GetDlgItem(IDC_RADIO_Normol))->SetCheck(true);//默认选中标准棋盘
 	bIsReady=false;
 	bIsMachine=false;
-	bDrawPieces=false;
 	bWithdraw = true;
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -160,7 +159,7 @@ void CMyGobang_DHKDlg::OnPaint()
 	{
 		CDialogEx::OnPaint();
 	}
-	if(bIsReady&&!bDrawPieces)
+	if(bIsReady)
 	{
 		//绘制棋盘
 		CDC *pDC;
@@ -179,6 +178,7 @@ void CMyGobang_DHKDlg::OnPaint()
 		{
 			gobang.DrawMainTable(pDC,&rect,19);//19*19棋盘
 		}
+		ReleaseDC(pDC);
 	}
 }
 
@@ -219,6 +219,7 @@ void CMyGobang_DHKDlg::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			gobang.DrawRectangle(pDC, pt);
 		}
+		ReleaseDC(pDC);
 	}
 	CDialogEx::OnMouseMove(nFlags, point);
 }
@@ -227,7 +228,6 @@ void CMyGobang_DHKDlg::OnMouseMove(UINT nFlags, CPoint point)
 void CMyGobang_DHKDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	
 	if(!bIsReady)
 	{
 		MessageBox(_T("请先点击开始！"));
@@ -250,7 +250,9 @@ void CMyGobang_DHKDlg::OnLButtonDown(UINT nFlags, CPoint point)
 				KillTimer(1);
 				gobang.ReplayMark(pDC);
 				bIsReady = false;
+				bWithdraw = false;
 			}
+			ReleaseDC(pDC);
 		}
 	}
 	CDialogEx::OnLButtonDown(nFlags, point);
@@ -281,6 +283,7 @@ void CMyGobang_DHKDlg::OnTimer(UINT_PTR nIDEvent)
 		gobang.KeepPieces(pDC,rect);
 		break;
 	}
+	ReleaseDC(pDC);
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -302,6 +305,7 @@ void CMyGobang_DHKDlg::OnBnClickedButtonWithdraw()
 		{
 			MessageBox(_T("您还没有下棋！"));
 		}
+		ReleaseDC(pDC);
 	}
 	else if(bIsReady)
 	{
@@ -315,7 +319,6 @@ BOOL CMyGobang_DHKDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CPoint pos;
 	GetCursorPos(&pos);  //获取当前鼠标位置
-
 	CRect rc;
 	GetDlgItem(IDC_MainTable)->GetWindowRect(&rc); 
 	if (rc.PtInRect(pos)) //如果鼠标在这个范围之内
