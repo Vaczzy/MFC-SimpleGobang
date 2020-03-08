@@ -4,12 +4,12 @@ SimpleGobang程序简述
 ## 这是啥？
 这是一个简单的五子棋程序，使用C++ MFC编写。
 
-说它简单的原因是这个程序目前还只能做一些比较基础的操作。比如下棋、判断胜负和复盘等...
-
-运行截图：
-![image](https://github.com/Vaczzy/MFC-SimpleGobang/raw/master/Img/Run.PNG)
-
 代码对于C++ MFC编程新手来说十分友好。
+
+运行效果：
+
+<img src="https://github.com/Vaczzy/MFC-SimpleGobang/raw/master/GIF/demo5.gif" width=50% height=50%>
+
 ## 我为什么编写这个程序？
 * 锻炼自己的编程能力。
 * 测试自己设计的五子棋算法
