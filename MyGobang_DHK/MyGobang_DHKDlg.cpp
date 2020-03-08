@@ -77,6 +77,8 @@ BEGIN_MESSAGE_MAP(CMyGobang_DHKDlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_BN_CLICKED(IDC_BUTTON_Withdraw, &CMyGobang_DHKDlg::OnBnClickedButtonWithdraw)
 	ON_WM_SETCURSOR()
+	ON_WM_SIZE()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 
@@ -116,6 +118,11 @@ BOOL CMyGobang_DHKDlg::OnInitDialog()
 	bIsReady=false;
 	bIsMachine=false;
 	bWithdraw = true;
+	//获取客户区大小
+	CRect rect;
+	GetClientRect(&rect);  
+	oldSize.x = rect.right - rect.left;//客户区宽
+	oldSize.y = rect.bottom - rect.top;//客户区高
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -263,11 +270,6 @@ void CMyGobang_DHKDlg::OnBnClickedButtonMachine()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("相关功能正在测试中"));
-	//bIsReady=true;
-	//bIsMachine=true;
-	//bWithdraw=true;
-	//OnPaint();//参数设置完成后 再绘制棋盘
-	//gobang.SetPieces();
 }
 
 //刷新计时器
@@ -333,4 +335,68 @@ BOOL CMyGobang_DHKDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		return TRUE; 
 	}
 	return CDialogEx::OnSetCursor(pWnd, nHitTest, message);
+}
+
+//改变窗口大小
+void CMyGobang_DHKDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: 在此处添加消息处理程序代码
+	if (nType == SIZE_RESTORED || nType == SIZE_MAXIMIZED)
+	{
+		ReSize();//  自己写的函数
+	}
+
+}
+
+//  对话框中的所有控件都进行等比例缩放
+void CMyGobang_DHKDlg::ReSize()
+{
+	float fsp[4];
+	POINT newSize; //获取现在对话框的大小  
+	CRect recta;
+	GetClientRect(&recta);     //取客户区大小    
+	newSize.x = recta.right - recta.left;
+	newSize.y = recta.bottom - recta.top;
+	fsp[0] = (float)newSize.x / oldSize.x;
+	fsp[1] = (float)newSize.y / oldSize.y;
+	fsp[2] = (float)newSize.y - oldSize.y;
+	fsp[3] = (float)newSize.x - oldSize.x;
+	CRect Rect;
+	int woc;
+	CPoint OldTLPoint, TLPoint; //左上角  
+	CPoint OldBRPoint, BRPoint; //右下角  
+	HWND  hwndChild = ::GetWindow(m_hWnd, GW_CHILD);  ////取得第一个控件的句柄,用于遍历所有控件   
+	while (hwndChild)
+	{
+		woc = ::GetDlgCtrlID(hwndChild);//取得ID 
+				/*所有控件全都等比例扩大，除了上面的按钮*/
+		GetDlgItem(woc)->GetWindowRect(Rect);//获得相对于屏幕左上角的坐标    
+		ScreenToClient(Rect);//将屏幕坐标转换成相对客户窗口左上角的坐标
+
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = long(OldTLPoint.x * fsp[0]);//用比例得出左上角的x坐标
+		TLPoint.y = long(OldTLPoint.y * fsp[1]); //用比例得出左上角的y坐标
+
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x * fsp[0]); //用比例得出右下角的x坐标
+		BRPoint.y = long(OldBRPoint.y * fsp[1]);//用比例得出右下角的y坐标
+
+		Rect.SetRect(TLPoint, BRPoint);//设置最新的Rect
+		GetDlgItem(woc)->MoveWindow(Rect, TRUE);
+		hwndChild = ::GetWindow(hwndChild, GW_HWNDNEXT);//获得下一个控件的句柄
+
+	}
+	oldSize = newSize;
+}
+
+void CMyGobang_DHKDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	CPoint   pt(100, 100); //定义宽和高  
+	lpMMI->ptMinTrackSize = pt; //限制最小宽和高  
+	//CDialogEx::OnGetMinMaxInfo(lpMMI);
+
+	CDialogEx::OnGetMinMaxInfo(lpMMI);
 }
