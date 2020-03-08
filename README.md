@@ -25,7 +25,7 @@ SimpleGobang程序简述
 ## 使用这个程序？
 * Method1：下载Release文件夹中的MyGobang_DHK.exe可执行文件至本地直接运行；
 * Method2：下载Release文件夹中的MyGobang_1.0exe.zip压缩文件至本地，解压后直接运行；
-* Method3：在Visual Studio 2017中新建一个C++ MFC工程，将代码拷贝至本地添加到工程中，编译运行。
+* Method3：在Visual Studio 2017或更高版本中新建一个C++ MFC工程，将代码拷贝至本地添加到工程中，编译运行。
 ## 存在的问题
 * 目前还没有实现程序自动下棋。
 * 该项目是高度开放的，如果您在代码、运行等任何方面发现问题，欢迎您改正！
