@@ -1,10 +1,18 @@
-# 程序说明
-该程序是基于C++ MFC编写的
-
-编码的原始平台是Visual Studio 2010,之后又使用了2017版本对部分代码进行了编辑
-
-该程序目前实现了人vs人的五子棋程序部分 
-
-主要的实现代码写在类CMainGobang中，存放于MainGobang.h和MainGobang.cpp中
-
-项目的其他文件为VS2010自动生成的文件，在MyGobang_DHKDlg.h和MyGobang_DHKDlg.cpp中编写了UI界面的代码
+# 文件说明
+## 一、 基础信息
+- 编码平台：Visual Studio 2017
+- 语言：C++
+- 工程类型：MFC Application
+## 二、实现代码文件
+（您可以修改并提交的文件）
+- 主算法：MainGobang.h，MainGobang.cpp (C++类CMainGobang)
+- 界面函数：MyGobang_DHKDlg.h，MyGobang_DHKDlg.cpp
+## 三、工程自动生成的文件目录
+- resource.h
+- stdafx.h，stdafx.cpp
+- targetver.h
+- MyGobang_DHK.rc
+- MyGobang_DHK.aps
+- MyGobang_DHK.h，MyGobang_DHK.cpp
+- MyGobang_DHK.vcxproj，MyGobang_DHK.vcxproj.filters，MyGobang_DHK.vcxproj.user
+- ReadMe.txt
