@@ -33,6 +33,7 @@ protected:
 public:
 	CMainGobang gobang;
 	CStatic picMain;//画图控件
+	POINT oldSize;//用以记录原始对话框大小
 	bool bIsReady;//可以开始human vs human
 	bool bIsMachine;//human vs machine
 	bool bWithdraw;//悔棋次数
@@ -43,4 +44,7 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButtonWithdraw();
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	void ReSize();
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };
