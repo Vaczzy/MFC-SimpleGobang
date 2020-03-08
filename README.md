@@ -9,7 +9,6 @@ SimpleGobang程序简述
 <img src="https://github.com/Vaczzy/MFC-SimpleGobang/raw/master/GIF/demo5.gif" width=50% height=50%>
 
 ## 我为什么编写这个程序？
-* 锻炼自己的编程能力。
 * 测试自己设计的五子棋算法
 * 检验五子棋的可对抗性。
 
