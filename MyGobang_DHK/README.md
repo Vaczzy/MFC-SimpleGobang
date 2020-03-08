@@ -1,6 +1,6 @@
 # 文件说明
 ## 一、 基础信息
-- 编码平台：Visual Studio 2017
+- 编码平台：Visual Studio 2017或更高
 - 语言：C++
 - 工程类型：MFC Application
 ## 二、实现代码文件
