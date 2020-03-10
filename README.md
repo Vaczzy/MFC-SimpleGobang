@@ -1,5 +1,7 @@
-SimpleGobang程序简述
+SimpleGobang程序简述 
 =======
+[English](https://github.com/Vaczzy/MFC-SimpleGobang/master/README_EN.md)
+
 查看此程序的基础构建过程，可参考我的CSDN文章：https://blog.csdn.net/weixin_44899883/article/details/104379195
 ## 这是啥？
 **这就是一个简单的五子棋程序**
