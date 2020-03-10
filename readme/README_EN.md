@@ -1,5 +1,6 @@
 SimpleGobang Program Introduction
 =======
+[简体中文](https://github.com/Vaczzy/MFC-SimpleGobang/blob/master/README.md)
 ## What's this？
 **It's just a simple gobang game program,or called it Gomoku,Five in a raw**
 
