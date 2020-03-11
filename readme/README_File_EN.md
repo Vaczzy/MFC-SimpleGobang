@@ -1,11 +1,12 @@
 # File Introduction
+[简体中文](https://github.com/Vaczzy/MFC-SimpleGobang/blob/master/MyGobang_DHK/README.md)
 ## 1. Basic Information
 - Coding Platform: Visual Studio 2017 or higher version
 - Language：C++
 - Project Type：MFC Application
 ## 2.Implementation Code File
 **(Which you can submit changes)**
-- Main Algorithm: MainGobang.h，MainGobang.cpp (class CMainGobang in C++)
+- Main Algorithm: MainGobang.h，MainGobang.cpp (class CMainGobang by C++)
 - UI: MyGobang_DHKDlg.h，MyGobang_DHKDlg.cpp
 ## 3.Project automatically generated Files
 - resource.h
