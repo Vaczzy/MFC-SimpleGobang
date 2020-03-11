@@ -1,4 +1,5 @@
 # 文件说明
+[English Version](https://github.com/Vaczzy/MFC-SimpleGobang/blob/master/readme/README_File_EN.md)
 ## 一、 基础信息
 - 编码平台：Visual Studio 2017或更高
 - 语言：C++
