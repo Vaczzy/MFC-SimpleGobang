@@ -15,7 +15,7 @@ SimpleGobang程序简述
 * Method2：下载**Release**文件夹中的**MyGobang_1.0exe.zip**压缩文件至本地，解压后直接运行；
 * Method3：在**Visual Studio 2017**或更高版本中新建一个**C++ MFC**工程，将代码拷贝至本地添加到工程中，编译运行。
 ## 提交更改？
-* 您可以进入**MyGobang_DHK**文件夹查看代码 内附程序文件架构和提交更改说明
+* 您可以进入[**MyGobang_DHK**](https://github.com/Vaczzy/MFC-SimpleGobang/blob/master/MyGobang_DHK)文件夹查看代码 内附程序文件架构和提交更改说明
 * 您还可以为本说明更新更加地道的英文说明 英文说明为**readme**文件夹中的**README_EN.md**文件
 * 该项目是高度开放的，欢迎大家提交更改
 ## 我为什么编写这个程序？
