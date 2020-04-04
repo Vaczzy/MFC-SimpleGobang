@@ -6,7 +6,7 @@ SimpleGobang Program Introduction
 
 This Program can provide you with a simple C++ MFC **dialog** gobang program **framework**, and on this basis you can continue to **add new functions**.
 
-For beginners, this simple program can also help you learn C++ MFC **dialog** programming, and make a simple and fun program yourself.
+For beginners, this simple program can also help you learn C++ MFC **dialog** programming, and make a simple and fun program by yourself.
 
 Action GIF：
 
